@@ -13,7 +13,7 @@ function App() {
       </div>
       <Routes>
         <Route path='/' element={<Forms />} />
-        <Route path='/:roomId' element={<RoomPage />} />
+        <Route path='/board/:roomId' element={<RoomPage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>
