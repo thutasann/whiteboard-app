@@ -1,9 +1,12 @@
 import { useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import WhiteBoard from '../../components/Whiteboard'
 
 const RoomPage = () => {
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
+  const { roomId } = useParams()
+  console.log('param', roomId)
 
   const [tool, setTool] = useState('pencil')
   const [color, setColor] = useState('black')
