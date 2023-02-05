@@ -12,6 +12,16 @@ const RoomPage = () => {
   const [color, setColor] = useState('black')
   const [elements, setElements] = useState([])
 
+  const handleClearCanvas = () => {
+    const canvas = canvasRef.current
+    // @ts-ignore
+    const ctx = canvas.getContext('2d')
+    ctx.fillRect = 'white'
+    // @ts-ignore
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+    setElements([])
+  }
+
   return (
     <div className='mainWrapper'>
       <h1>
@@ -66,11 +76,13 @@ const RoomPage = () => {
           <button className='rewindBtns'>Redo</button>
         </div>
         <div className='clear'>
-          <button className='rewindBtns clearBtn'>Clear Canvas</button>
+          <button className='rewindBtns clearBtn' onClick={handleClearCanvas}>
+            Clear Canvas
+          </button>
         </div>
       </div>
       <div className='whiteboardContainer mb-7'>
-        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} />
+        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} color={color} />
       </div>
     </div>
   )
