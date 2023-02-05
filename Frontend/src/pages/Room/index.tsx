@@ -11,6 +11,7 @@ const RoomPage = () => {
   const [tool, setTool] = useState('pencil')
   const [color, setColor] = useState('black')
   const [elements, setElements] = useState([])
+  const [history, setHistory] = useState([])
 
   const handleClearCanvas = () => {
     const canvas = canvasRef.current
@@ -20,6 +21,18 @@ const RoomPage = () => {
     // @ts-ignore
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
     setElements([])
+  }
+
+  const undo = () => {
+    setHistory(prevHistory => [...prevHistory, elements[elements.length - 1]])
+    setElements(prevElements => prevElements.slice(0, prevElements.length - 1))
+  }
+
+  console.log('elements', elements)
+
+  const redo = () => {
+    setElements(prevElements => [...prevElements, history[history.length - 1]])
+    setHistory(prevHistory => prevHistory.slice(0, prevHistory.length - 1))
   }
 
   return (
@@ -72,8 +85,16 @@ const RoomPage = () => {
           </div>
         </div>
         <div className='rewindBtnWrapper'>
-          <button className='rewindBtns bg-[#007bff] text-white hover:bg-opacity-90'>Undo</button>
-          <button className='rewindBtns'>Redo</button>
+          <button
+            className='rewindBtns bg-[#007bff] text-white hover:bg-opacity-90'
+            disabled={elements.length === 0}
+            onClick={() => undo()}
+          >
+            Undo
+          </button>
+          <button className='rewindBtns' disabled={history.length < 1} onClick={() => redo()}>
+            Redo
+          </button>
         </div>
         <div className='clear'>
           <button className='rewindBtns clearBtn' onClick={handleClearCanvas}>
