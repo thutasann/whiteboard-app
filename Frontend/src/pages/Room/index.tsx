@@ -67,7 +67,7 @@ const RoomPage = () => {
         </div>
       </div>
       <div className='whiteboardContainer mb-7'>
-        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} />
+        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} />
       </div>
     </div>
   )
