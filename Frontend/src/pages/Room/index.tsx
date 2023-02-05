@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import WhiteBoard from '../../components/Whiteboard'
 
 const RoomPage = () => {
+  const canvasRef = useRef(null)
+  const ctxRef = useRef(null)
+
   const [tool, setTool] = useState('pencil')
   const [color, setColor] = useState('black')
+  const [elements, setElements] = useState([])
 
   return (
     <div className='mainWrapper'>
@@ -55,15 +59,15 @@ const RoomPage = () => {
           </div>
         </div>
         <div className='rewindBtnWrapper'>
-          <button className='rewindBtns bg-[#007bff] text-white'>Undo</button>
+          <button className='rewindBtns bg-[#007bff] text-white hover:bg-opacity-90'>Undo</button>
           <button className='rewindBtns'>Redo</button>
         </div>
         <div className='clear'>
           <button className='rewindBtns clearBtn'>Clear Canvas</button>
         </div>
       </div>
-      <div className='whiteboardContainer'>
-        <WhiteBoard />
+      <div className='whiteboardContainer mb-7'>
+        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} />
       </div>
     </div>
   )
