@@ -1,5 +1,11 @@
+import Forms from './components/Forms'
+
 function App() {
-  return <div className='text-3xl font-bold underline'>Hello</div>
+  return (
+    <>
+      <Forms />
+    </>
+  )
 }
 
 export default App
