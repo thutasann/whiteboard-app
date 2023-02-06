@@ -20,8 +20,8 @@ const JoinRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
       name,
       roomId,
       userId: uuid(),
-      host: true,
-      presenter: true,
+      host: false,
+      presenter: false,
     }
     setUser(roomData)
     navigate(`/${roomId}`)
@@ -30,7 +30,7 @@ const JoinRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
 
   return (
     <form className='form'>
-      <input className='input' placeholder='Enter Room Name' value={name} onChange={e => setName(e.target.value)} />
+      <input className='input' placeholder='Enter Your Name' value={name} onChange={e => setName(e.target.value)} />
       <input className='input mt-5' placeholder='Eneter Room ID' value={roomId} onChange={e => setRoomId(e.target.value)} />
       <button className='actionBtns' onClick={handleRoomJoin}>
         Join Room
