@@ -1,11 +1,11 @@
-import express, { Express } from 'express'
+const express = require('express')
 import dotenv from 'dotenv'
 import { Server, Socket } from 'socket.io'
 import { RoomTypes } from './types/roomData'
 
 // App Configuration
 dotenv.config()
-const app: Express = express()
+const app = express()
 
 // Server Configuration
 const server = require('http').createServer(app)
