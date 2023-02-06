@@ -1,11 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Socket } from 'socket.io-client'
+import { RoomTypes } from '../../../types/roomData'
+import { useNavigate } from 'react-router-dom'
 
-const JoinRoomForm = () => {
+type RoomProps = {
+  uuid: any
+  socket: Socket
+  setUser: any
+}
+
+const JoinRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
+  const navigate = useNavigate()
+  const [roomId, setRoomId] = useState<string>('')
+  const [name, setName] = useState<string>('')
+
+  const handleRoomJoin = e => {
+    e.preventDefault()
+    const roomData: RoomTypes = {
+      name,
+      roomId,
+      userId: uuid(),
+      host: true,
+      presenter: true,
+    }
+    setUser(roomData)
+    navigate(`/${roomId}`)
+    socket.emit('userJoined', roomData)
+  }
+
   return (
     <form className='form'>
-      <input className='input' placeholder='Name' />
-      <input className='input mt-5' placeholder='Room ID' />
-      <button className='actionBtns'>Join Room</button>
+      <input className='input' placeholder='Enter Room Name' value={name} onChange={e => setName(e.target.value)} />
+      <input className='input mt-5' placeholder='Eneter Room ID' value={roomId} onChange={e => setRoomId(e.target.value)} />
+      <button className='actionBtns' onClick={handleRoomJoin}>
+        Join Room
+      </button>
     </form>
   )
 }

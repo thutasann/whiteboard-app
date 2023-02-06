@@ -1,11 +1,16 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { RoomTypes } from '../../../types/roomData'
+import { Socket } from 'socket.io-client'
 
 type RoomProps = {
   uuid: any
+  socket: Socket
+  setUser: any
 }
 
-const CreateRoomForm = ({ uuid }: RoomProps) => {
+const CreateRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
+  const navigate = useNavigate()
   const [roomId, setRoomId] = useState(uuid())
   const [name, setName] = useState<string>('')
 
@@ -18,7 +23,10 @@ const CreateRoomForm = ({ uuid }: RoomProps) => {
       host: true,
       presenter: true,
     }
+    setUser(roomData)
     console.log('roomData', roomData)
+    navigate(`/${roomId}`)
+    socket.emit('userJoined', roomData)
   }
 
   return (
