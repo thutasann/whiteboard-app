@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { RoomTypes } from '../../../types/roomData'
+import { Socket } from 'socket.io-client'
 
 type RoomProps = {
   uuid: any
+  socket: Socket
+  setUser: any
 }
 
-const CreateRoomForm = ({ uuid }: RoomProps) => {
+const CreateRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
   const [roomId, setRoomId] = useState(uuid())
   const [name, setName] = useState<string>('')
 
@@ -18,7 +21,8 @@ const CreateRoomForm = ({ uuid }: RoomProps) => {
       host: true,
       presenter: true,
     }
-    console.log('roomData', roomData)
+    setUser(roomData)
+    socket.emit('userJoined', roomData)
   }
 
   return (
