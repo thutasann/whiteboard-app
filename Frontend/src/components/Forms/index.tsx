@@ -2,14 +2,18 @@ import React from 'react'
 import CreateRoomForm from './CreateRoomForm'
 import JoinRoomForm from './JoinRoomForm'
 
-const Forms = () => {
+type FormProps = {
+  uuid: any
+}
+
+const Forms = ({ uuid }: FormProps) => {
   return (
     <div className='formsWrapper'>
       <h1>Welcome to Whiteboard Sharing App</h1>
       <div className='cardWrapper'>
         <div className='card'>
           <h2>Create Room</h2>
-          <CreateRoomForm />
+          <CreateRoomForm uuid={uuid} />
         </div>
         <div className='card'>
           <h2>Join Room</h2>
