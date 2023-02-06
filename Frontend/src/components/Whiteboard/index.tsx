@@ -5,13 +5,21 @@ const roughGenerator = rough.generator()
 
 const WhiteBoard = ({ canvasRef, ctxRef, elements, setElements, tool, color, user, socket }) => {
   const [isDrawing, setIsDrawing] = useState(false)
+  const [img, setImg] = useState('')
   console.log('user', user)
+
+  // Socket whiteboardDataResponse
+  useEffect(() => {
+    socket.on('whiteboardDataResponse', data => {
+      setImg(data?.imgURL)
+    })
+  }, [])
 
   // If Not a Presenter
   if (!user?.presenter) {
     return (
       <div className='w-full h-full overflow-hidden'>
-        <img src='' alt='RealTime whiteboard app' className='w-full h-full' />
+        <img src={img} alt='RealTime whiteboard app' className='w-full h-full' />
       </div>
     )
   }
