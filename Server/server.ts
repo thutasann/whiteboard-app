@@ -1,6 +1,7 @@
 import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import { Server, Socket } from 'socket.io'
+import { RoomTypes } from './types/roomData'
 
 // App Configuration
 dotenv.config()
@@ -10,14 +11,18 @@ const app: Express = express()
 const server = require('http').createServer(app)
 const io: Server = new Server(server)
 
-// Routes
+// API Routes
 app.get('/', (req, res) => {
   res.send('This is MERN RealTime Board Sharing App')
 })
 
 // Socket IO
 io.on('connection', socket => {
-  console.log('User Connected')
+  socket.on('userJoined', (data: RoomTypes) => {
+    const { name, userId, roomId, host, presenter } = data
+    socket.join(roomId)
+    socket.emit('userIsJoined', { success: true })
+  })
 })
 
 // Starting the Server

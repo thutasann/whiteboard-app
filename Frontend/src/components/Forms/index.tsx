@@ -19,7 +19,7 @@ const Forms = ({ uuid, socket, setUser }: FormProps) => {
         </div>
         <div className='card'>
           <h2>Join Room</h2>
-          <JoinRoomForm />
+          <JoinRoomForm uuid={uuid} socket={socket} setUser={setUser} />
         </div>
       </div>
     </div>

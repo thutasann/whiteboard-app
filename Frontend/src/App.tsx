@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import RoomPage from './pages/Room'
 import NotFound from './pages/NotFound'
 import { io } from 'socket.io-client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const server = 'http://localhost:5000'
 const connectionOptions = {
@@ -17,6 +17,16 @@ const socket = io(server, connectionOptions)
 
 function App() {
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    socket.on('userIsJoined', data => {
+      if (data.success) {
+        console.log('userJoined')
+      } else {
+        console.log('userJoined error')
+      }
+    })
+  }, [])
 
   const uuid = () => {
     var S4 = () => {
