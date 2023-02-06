@@ -31,7 +31,7 @@ const CreateRoomForm = ({ uuid, socket, setUser }: RoomProps) => {
 
   return (
     <form className='form' onSubmit={handleCreateRoom}>
-      <input className='input' placeholder='Enter Room Name' value={name} onChange={e => setName(e.target.value)} />
+      <input className='input' placeholder='Enter Your Name' value={name} onChange={e => setName(e.target.value)} />
       <div className='inputGroup'>
         <input className='input' value={roomId} readOnly />
         <button

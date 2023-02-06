@@ -1,12 +1,15 @@
 import { useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Socket } from 'socket.io-client'
 import WhiteBoard from '../../components/Whiteboard'
 
-const RoomPage = () => {
+type RoomPageProps = {
+  user: any
+  socket: Socket
+}
+
+const RoomPage = ({ user, socket }: RoomPageProps) => {
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
-  const { roomId } = useParams()
-  console.log('param', roomId)
 
   const [tool, setTool] = useState('pencil')
   const [color, setColor] = useState('black')
@@ -28,8 +31,6 @@ const RoomPage = () => {
     setElements(prevElements => prevElements.slice(0, prevElements.length - 1))
   }
 
-  console.log('elements', elements)
-
   const redo = () => {
     setElements(prevElements => [...prevElements, history[history.length - 1]])
     setHistory(prevHistory => prevHistory.slice(0, prevHistory.length - 1))
@@ -40,70 +41,81 @@ const RoomPage = () => {
       <h1>
         Whiteboard <span className='text-teal-700'>[Users Online : 0]</span>
       </h1>
-      <div className='toolBtnsContainer mt-5'>
-        <div className='colorPicker'>
-          <div>
-            <label htmlFor='color'>Select Color: </label>
-            <input type='color' id='color' className='colorPicketInput' value={color} onChange={e => setColor(e.target.value)} />
+      {user?.presenter && (
+        <div className='toolBtnsContainer mt-5'>
+          <div className='colorPicker'>
+            <div>
+              <label htmlFor='color'>Select Color: </label>
+              <input type='color' id='color' className='colorPicketInput' value={color} onChange={e => setColor(e.target.value)} />
+            </div>
+          </div>
+          <div className='tools'>
+            <div>
+              <label htmlFor='pencil'>Pencil</label>
+              <input
+                type='radio'
+                name='tool'
+                checked={tool === 'pencil'}
+                className='radio'
+                value='pencil'
+                id='pencil'
+                onChange={e => setTool(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor='line'>Line</label>
+              <input
+                type='radio'
+                name='tool'
+                checked={tool === 'line'}
+                className='radio'
+                value='line'
+                id='line'
+                onChange={e => setTool(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor='rectangle'>Rectangle</label>
+              <input
+                type='radio'
+                name='tool'
+                checked={tool === 'rectangle'}
+                className='radio'
+                value='rectangle'
+                onChange={e => setTool(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className='rewindBtnWrapper'>
+            <button
+              className='rewindBtns bg-[#007bff] text-white hover:bg-opacity-90'
+              disabled={elements.length === 0}
+              onClick={() => undo()}
+            >
+              Undo
+            </button>
+            <button className='rewindBtns' disabled={history.length < 1} onClick={() => redo()}>
+              Redo
+            </button>
+          </div>
+          <div className='clear'>
+            <button className='rewindBtns clearBtn' onClick={handleClearCanvas}>
+              Clear Canvas
+            </button>
           </div>
         </div>
-        <div className='tools'>
-          <div>
-            <label htmlFor='pencil'>Pencil</label>
-            <input
-              type='radio'
-              name='tool'
-              checked={tool === 'pencil'}
-              className='radio'
-              value='pencil'
-              id='pencil'
-              onChange={e => setTool(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor='line'>Line</label>
-            <input
-              type='radio'
-              name='tool'
-              checked={tool === 'line'}
-              className='radio'
-              value='line'
-              id='line'
-              onChange={e => setTool(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor='rectangle'>Rectangle</label>
-            <input
-              type='radio'
-              name='tool'
-              checked={tool === 'rectangle'}
-              className='radio'
-              value='rectangle'
-              onChange={e => setTool(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className='rewindBtnWrapper'>
-          <button
-            className='rewindBtns bg-[#007bff] text-white hover:bg-opacity-90'
-            disabled={elements.length === 0}
-            onClick={() => undo()}
-          >
-            Undo
-          </button>
-          <button className='rewindBtns' disabled={history.length < 1} onClick={() => redo()}>
-            Redo
-          </button>
-        </div>
-        <div className='clear'>
-          <button className='rewindBtns clearBtn' onClick={handleClearCanvas}>
-            Clear Canvas
-          </button>
-        </div>
-      </div>
+      )}
       <div className='whiteboardContainer mb-7'>
-        <WhiteBoard canvasRef={canvasRef} ctxRef={ctxRef} elements={elements} setElements={setElements} tool={tool} color={color} />
+        <WhiteBoard
+          canvasRef={canvasRef}
+          ctxRef={ctxRef}
+          elements={elements}
+          setElements={setElements}
+          tool={tool}
+          color={color}
+          user={user}
+          socket={socket}
+        />
       </div>
     </div>
   )
