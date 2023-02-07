@@ -4,6 +4,7 @@ import RoomPage from './pages/Room'
 import NotFound from './pages/NotFound'
 import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
+import { RoomTypes } from './types/roomData'
 
 const server = 'http://localhost:5000'
 const connectionOptions = {
@@ -17,14 +18,21 @@ const socket = io(server, connectionOptions)
 
 function App() {
   const [user, setUser] = useState(null)
+  const [users, setUsers] = useState<RoomTypes[]>([])
 
   useEffect(() => {
     socket.on('userIsJoined', data => {
+      console.log('data', data)
       if (data.success) {
         console.log('userJoined')
+        setUsers(data?.users)
       } else {
         console.log('userJoined error')
       }
+    })
+
+    socket.on('allUsers', data => {
+      setUsers(data)
     })
   }, [])
 
@@ -44,7 +52,7 @@ function App() {
       </div>
       <Routes>
         <Route path='/' element={<Forms uuid={uuid} socket={socket} setUser={setUser} />} />
-        <Route path='/:roomId' element={<RoomPage user={user} socket={socket} />} />
+        <Route path='/:roomId' element={<RoomPage user={user} socket={socket} users={users} />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

@@ -71,3 +71,7 @@ input:read-only{
 button:disabled{
     @apply bg-gray-400 cursor-not-allowed;
 }
+
+.joinersBtn{
+    @apply bg-teal-600 text-white p-2 rounded-md text-[14px] shadow-xl hover:shadow-sm transition-all duration-700 ease-in-out ;
+}
