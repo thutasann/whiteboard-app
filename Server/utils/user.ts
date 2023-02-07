@@ -5,8 +5,8 @@ let users: RoomTypes[] = []
 /**
  * Add User
  */
-export const addUser = ({ name, userId, roomId, host, presenter }: RoomTypes) => {
-  const user = { name, userId, roomId, host, presenter }
+export const addUser = ({ name, userId, roomId, host, presenter, socketId }: RoomTypes) => {
+  const user = { name, userId, roomId, host, presenter, socketId }
   users.push(user)
   return users.filter(user => user.roomId === roomId)
 }
@@ -15,7 +15,7 @@ export const addUser = ({ name, userId, roomId, host, presenter }: RoomTypes) =>
  * Remove User
  */
 export const removeUser = (id: string) => {
-  const index = users?.findIndex(user => user.userId === id)
+  const index = users?.findIndex(user => user.socketId === id)
   if (index !== -1) {
     return users.splice(index, 1)[0]
   }
@@ -25,7 +25,7 @@ export const removeUser = (id: string) => {
  * Get Sinngle
  */
 export const getUser = (id: string) => {
-  return users.find(user => user.userId === id)
+  return users.find(user => user.socketId === id)
 }
 
 /**

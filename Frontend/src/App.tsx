@@ -5,6 +5,7 @@ import NotFound from './pages/NotFound'
 import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import { RoomTypes } from './types/roomData'
+import { toast, ToastContainer } from 'react-toastify'
 
 const server = 'http://localhost:5000'
 const connectionOptions = {
@@ -34,6 +35,15 @@ function App() {
     socket.on('allUsers', data => {
       setUsers(data)
     })
+
+    socket.on('userJoinedMessageBoradcasted', data => {
+      console.log('message', data)
+      toast.info(`${data} joined the room`)
+    })
+
+    socket.on('userLeftMessageBroadcasted', data => {
+      toast.warning(`${data} left the room`)
+    })
   }, [])
 
   const uuid = () => {
@@ -45,6 +55,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <div className='flex flex-col items-center mt-4'>
         <Link to='/'>
           <img src='/logo.png' width={70} height={70} alt='Whiteboard App' />
