@@ -1,6 +1,6 @@
 import { RoomTypes } from '../types/roomData'
 
-const users: RoomTypes[] = []
+let users: RoomTypes[] = []
 
 /**
  * Add User
@@ -8,7 +8,7 @@ const users: RoomTypes[] = []
 export const addUser = ({ name, userId, roomId, host, presenter }: RoomTypes) => {
   const user = { name, userId, roomId, host, presenter }
   users.push(user)
-  return user
+  return users.filter(user => user.roomId === roomId)
 }
 
 /**

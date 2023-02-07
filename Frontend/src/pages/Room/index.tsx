@@ -1,13 +1,15 @@
 import { useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import WhiteBoard from '../../components/Whiteboard'
+import { RoomTypes } from '../../types/roomData'
 
 type RoomPageProps = {
   user: any
+  users: any[]
   socket: Socket
 }
 
-const RoomPage = ({ user, socket }: RoomPageProps) => {
+const RoomPage = ({ user, users, socket }: RoomPageProps) => {
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
 
@@ -15,6 +17,8 @@ const RoomPage = ({ user, socket }: RoomPageProps) => {
   const [color, setColor] = useState('black')
   const [elements, setElements] = useState([])
   const [history, setHistory] = useState([])
+
+  console.log('users =>', users)
 
   const handleClearCanvas = () => {
     const canvas = canvasRef.current
@@ -39,7 +43,7 @@ const RoomPage = ({ user, socket }: RoomPageProps) => {
   return (
     <div className='mainWrapper'>
       <h1>
-        Whiteboard <span className='text-teal-700'>[Users Online : 0]</span>
+        Whiteboard <span className='text-teal-700'>[Users Online : {users?.length || 0}]</span>
       </h1>
       {user?.presenter && (
         <div className='toolBtnsContainer mt-5'>
