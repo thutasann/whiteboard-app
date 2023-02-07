@@ -54,7 +54,7 @@ const RoomPage = ({ user, users, socket }: RoomPageProps) => {
       <button className='joinersBtn' onClick={OpenModal}>
         See Joiners
       </button>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} users={users} user={user} />
       {user?.presenter && (
         <div className='toolBtnsContainer mt-5'>
           <div className='colorPicker'>
