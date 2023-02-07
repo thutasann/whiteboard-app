@@ -4,9 +4,11 @@ import { Dialog, Transition } from '@headlessui/react'
 type Props = {
   isOpen: any
   setIsOpen: any
+  users: any[]
+  user: any
 }
 
-function Modal({ isOpen, setIsOpen }: Props) {
+function Modal({ isOpen, setIsOpen, users, user }: Props) {
   const closeModal = () => {
     setIsOpen(false)
   }
@@ -40,11 +42,16 @@ function Modal({ isOpen, setIsOpen }: Props) {
               >
                 <Dialog.Panel className='w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
                   <Dialog.Title as='h3' className='flex items-center space-x-2 text-[18px]  leading-6 text-gray-700 font-bold'>
-                    Joiners
+                    All Joiners
                   </Dialog.Title>
                   <div className='mt-5'>
                     <ul>
-                      <li className='text-[15px] text-gray-800'>🤖 Thuta sann</li>
+                      {users?.map((u, index) => (
+                        <li key={index} className='text-[15px] text-gray-800 my-3'>
+                          🤖 {u?.name}
+                          <span className='font-bold ml-1'>{user && user?.userId === u?.userId && '(You)'}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </Dialog.Panel>

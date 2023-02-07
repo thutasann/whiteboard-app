@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
 
 let roomIdGlobal, imageURLGlobal
 
-// Socket IO
 io.on('connection', socket => {
   socket.on('userJoined', (data: RoomTypes) => {
     const { name, userId, roomId, host, presenter } = data
