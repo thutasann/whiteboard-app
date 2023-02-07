@@ -1,8 +1,7 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 import Modal from '../../components/Modal'
 import WhiteBoard from '../../components/Whiteboard'
-import { RoomTypes } from '../../types/roomData'
 
 type RoomPageProps = {
   user: any
@@ -19,6 +18,12 @@ const RoomPage = ({ user, users, socket }: RoomPageProps) => {
   const [elements, setElements] = useState([])
   const [history, setHistory] = useState([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    return () => {
+      socket.emit('userLeft', user)
+    }
+  })
 
   const OpenModal = () => {
     setIsOpen(true)

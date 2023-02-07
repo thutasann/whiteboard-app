@@ -4,4 +4,5 @@ export type RoomTypes = {
   userId: string
   host: boolean
   presenter: boolean
+  socketId?: any
 }
