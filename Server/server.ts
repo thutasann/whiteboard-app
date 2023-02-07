@@ -2,6 +2,7 @@ const express = require('express')
 import dotenv from 'dotenv'
 import { Server, Socket } from 'socket.io'
 import { RoomTypes } from './types/roomData'
+import { addUser } from './utils/user'
 
 // App Configuration
 dotenv.config()
@@ -20,18 +21,17 @@ let roomIdGlobal, imageURLGlobal
 
 // Socket IO
 io.on('connection', socket => {
-  // User Join
   socket.on('userJoined', (data: RoomTypes) => {
     const { name, userId, roomId, host, presenter } = data
     roomIdGlobal = roomId
     socket.join(roomId)
-    socket.emit('userIsJoined', { success: true })
+    const users = addUser(data)
+    socket.emit('userIsJoined', { success: true, users })
     socket.broadcast.to(roomId).emit('whiteboardDataResponse', {
       imgURL: imageURLGlobal,
     })
   })
 
-  // Whiteboard Data
   socket.on('whiteboardData', data => {
     imageURLGlobal = data
     socket.broadcast.to(roomIdGlobal).emit('whiteboardDataResponse', {
